@@ -68,8 +68,6 @@ void pesquisarEstado(){
 			
 			achei = 1;
 			system("pause");
-		}else{
-			achei = 0;
 		}
 	}
 	 if (!achei)
@@ -94,8 +92,6 @@ void pesquisarMunicipio(){
 			
 			achei = 1;
 			system("pause");
-		}else{
-			achei = 0;
 		}
 	}
 	}
