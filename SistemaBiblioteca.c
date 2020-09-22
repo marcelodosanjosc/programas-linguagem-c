@@ -23,12 +23,14 @@ typedef struct Livro{
 	char ISBN[15];
 	char curso[20];
 	char status[20];
+	int posicao;
 }Livro; // registro livro
 
 typedef struct Aluno{
 	char nomeAluno[20];
 	int matricula;
 	char curso[20];
+	int quantidade;
 	char livroEmpestado[20][3];
 }Aluno; // registro aluno
 
@@ -206,13 +208,14 @@ void CadastraLivro(){
 						strcpy(livro[l].curso, curso[i].nomeCurso);
 						}
 					}
-	
+	strcpy(livro[l].status, "disponivel");
 	}
+	
 	exibirLivro();
 }// fim do cadastra livro
 
 void cadastraAluno(){
-	int a, c, aux,i, achei = 0;
+	int a, c, aux,i, achei = 0,cVazio;
 	for (a = 0;a < 2;a++){
 	printf("Digite o nome do aluno %i:  \n",a);
 	fflush(stdin);
@@ -220,8 +223,8 @@ void cadastraAluno(){
 	printf("Digite a matricula: \n");
 	fflush(stdin);
 	scanf("%i",&aluno[a].matricula);
-	if (curso != NULL ){
 	
+	if (curso != NULL ){
 		for (c = 0; c < 2; c++){
 						printf("Cursos: \n");
 						printf("%i - %s \n",c,curso[c].nomeCurso);
@@ -240,6 +243,7 @@ void cadastraAluno(){
 		if (!achei){
 			printf("Nao a cursos \n");
 		}
+
 
 	}
 	exibirAluno();
@@ -345,7 +349,9 @@ void pesquisarLivro(){
 }// fim pesquisar livro
 
 void realizarEmprestimo(){
-	int i, livroDisponivel = 0;
+	int i,a,achei = 0, livroDisponivel = 0, posicao,l, auxEscolhar,indice;
+	int idAchei = 0, vetor[2]= {0,0};
+	char auxNome[20];
 
 	for (i = 0; i < 2;i++){
 		if (strcmp(livro[i].status, "disponivel")==0){
@@ -355,8 +361,59 @@ void realizarEmprestimo(){
 	if(livroDisponivel > 0 ){
 	
 	printf("\t________Realizar Emprestimo________\n");	
+		
+		printf("Digite nome do aluno: \n");
+		fflush(stdin);
+		gets(auxNome);
+		for (a = 0; a < 3; a++){
+		if (strcmp(auxNome, aluno[a].nomeAluno)==0){
+				achei = 1;
+				posicao = i;
+		}
+		}
+		if (!achei){
+			printf("Aluno nao encontrado \n");
+		}else{
+			if (aluno[posicao].quantidade <= 3 ){
+				do{
+				
+				for (l = 0; l< 2;l++){
+					if(strcmp(livro[l].status, "disponivel")==0){
+						printf("%i - %s \n",l, livro[l].nomeLivro);
+						livro[l].posicao = l;
+						l++;
+					}
+					
+				}
+				fflush(stdin);
+				printf("Escolha: \n");
+				scanf("%i",&auxEscolhar);
+				
+				for (indice = 0; indice < 2;indice++){
+					if(livro[indice].posicao == auxEscolhar){
+						strcpy(livro[indice].status, "emprestado");
+						strcpy(aluno[posicao].livroEmpestado[vetor[posicao]], livro[indice].nomeLivro);
+						vetor[posicao]++;
+						aluno[posicao].quantidade++;
+						idAchei = 1;
+						
+						printf("\tEmpréstismo realizado com sucesso!:\n\n"
+								   "Emprestado pelo(a) aluno(a): %s\n"
+								   "Matricula: %i\n"
+								   "Curso: %s\n"
+								   "Livro emprestado: %s\n"
+								   "ISBN: %s\n"
+								   "Curso: %s\n"
+								   "Área: %s\n\n",aluno[posicao].nomeAluno, aluno[posicao].matricula,aluno[posicao].curso,
+								   livro[indice].nomeLivro, livro[indice].ISBN, livro[indice].curso,livro[indice].status);
+						}
+					
+					}
+			   }while(idAchei != 1);
+			}
+		}
 	}
-	exibirLivro();	
+	
 }// fim do realizar emprestimo
 
 
@@ -381,6 +438,7 @@ void exibirLivro(){
 	printf("\t Nome: %s \n", livro[i].nomeLivro);
 	printf("\t Codigo ISBM: %s \n", livro[i].ISBN);
 	printf("\t Curso: %s \n", livro[i].curso);
+	printf("\t Status: %s \n", livro[i].status);
 	printf("\t________________________________________\n");
 	}
 	
