@@ -29,7 +29,7 @@ int opMenuADM;
 int opMenuFunc;
 
 int indFuncionario;
-int IndProduto;
+int indProduto;
 
 //DADOS DO ADIMINISTRADOR
 char loginADMIN[25] = "admin";
@@ -78,7 +78,8 @@ int main(void){
 							break;
 							
 							case 3:
-								fVenda();
+								
+								
 							break;
 						}
 					}while(opMenuADM != 0);
@@ -166,9 +167,11 @@ int fLogin(void){
 			}
 		
 		}	
+		return op;
 	}
-	return op;
-}
+	
+//}
+
 
 //FUNÇÃO DE TELA DO ADIMINISTRADOR
 int telaADMIN(void){
@@ -196,26 +199,25 @@ int telaADMIN(void){
 
 //FUNÇÃO DO CADASTRAMENTO DE PRODUTOS
 void cadastrarProduto(){
-	
-	if(IndProduto < max ){
+	if(indProduto < max ){
 		
 	puts(":::::|Cadastramento de Produtos|:::::");
 	
 	printf("Nome: ");
 	fflush(stdin);
-	gets(produto[IndProduto].nome);
+	gets(produto[indProduto].nome);
 	
 	printf("Qtd: ");
 	fflush(stdin);
-	scanf("%i", &produto[IndProduto].qtd);
+	scanf("%i", &produto[indProduto].qtd);
 	
 	printf("Valor: R$");
 	fflush(stdin);
-	scanf("%f", &produto[IndProduto].valor);
+	scanf("%f", &produto[indProduto].valor);
 
 	system("cls");
 	}
-	IndProduto++;
+	indProduto++;
 }
 
 //FUNÇÃO DO CADASTRAMENTO DE FUNCIONÁRIOS
@@ -269,16 +271,49 @@ int telaFunc(void){
 
 //FUNÇÃO DE OPERAÇÃO DE VENDAS
 void fVenda(){
-	int i;
+	int i, opcaoProduto, qtdProduto, dQuantidade, maisProduto;
+	float valorTotal = 0.0, valorProduto = 0.0, pagamento = 0.0, troco = 0.0;
 	puts(":::::|Venda de Produtos|:::::\n");
 
-
-		for(i= 0;i < IndProduto; i++){
-			printf("Nome: %s / Qtd: %i / Valor R$%.2f\n", produto[i].nome, produto[i].qtd, produto[i].valor);
+		do {
+		for(i= 0;i < indProduto; i++){
+			printf("[%i] - Nome: %s / Qtd: %i / Valor R$%.2f\n",i, produto[i].nome, produto[i].qtd, produto[i].valor);
 		}
-	}
-
-	
+		for (i = 0;i < indProduto;i++){
+		printf("Produto: ");
+		fflush(stdin);
+		scanf("%i",&opcaoProduto);
+		printf("Qunatidade: ");
+		fflush(stdin);
+		scanf("%i",&qtdProduto);
+			//for (i = 0;i < indProduto;i++){
+				if(opcaoProduto == i){	
+					if (qtdProduto <= produto[i].qtd){
+					produto[i].qtd -= qtdProduto;
+					valorProduto = produto[i].valor * qtdProduto;
+					}else{
+					printf("Alem da quantidade \n ");
+					}
+				}else{
+					printf("Produto não existente! \n");
+				}
+			}
+		valorTotal += valorProduto;	
+		printf("Outro produto (1) finaliza (0): \n ");
+		scanf("%i",&maisProduto);	
+		}while(maisProduto != 0);
+		printf("Total: %.2f \n",valorTotal); 
+		printf("Pagamento: \n");
+		fflush(stdin);
+		scanf("%f",&pagamento);
+		if(pagamento < valorTotal){
+			printf("Valor abaxio: \n");
+		}else {
+			troco =pagamento - valorTotal;
+		}
+		printf("O troco: %.2f \n",troco);
+		system("pause");
+		
 }
 
 //FUNÇÕES DE TRATAMENTO DE ERROS
