@@ -12,6 +12,7 @@ typedef struct Pessoa{
 }Pessoa;
 
 //declarações
+void AlterarOpcao(Pessoa *pp);
 void ExcluirPessoa(Pessoa *pp1, Pessoa *pp2, Pessoa *pp3);
 void AlterarPessoa(Pessoa *pp1, Pessoa *pp2, Pessoa *pp3);
 void Menu();
@@ -40,8 +41,8 @@ void CadastraPessoa(Pessoa *pp1, Pessoa *pp2, Pessoa *pp3){
 		printf("Digite o ano de nascimento \n");
 		fflush(stdin);
 		scanf("%i",&paux.ano_nascimento);
-		if (i == 0){
-			*pp1 = paux;
+		if (i == 0){ // atribuido os valores conforme os indice 
+			*pp1 = paux; // modo certo usat strcpy(*pp1->nome,aux.nome)....etc teste porque não deu certo
 		}else if(i == 1){
 			*pp2 = paux;
 		}else if(i == 2){
@@ -52,7 +53,7 @@ void CadastraPessoa(Pessoa *pp1, Pessoa *pp2, Pessoa *pp3){
 	
 }// fim do cadastra pessoa
 
-void CalcularIdadePessoa(int ano){
+void CalcularIdadePessoa(int ano){ 
 	int idade = 2020 - ano;
 	printf("Idade: %i \n",idade);
 }// fim do calcular idade
@@ -94,9 +95,9 @@ void PesquisarPessoa(Pessoa p1, Pessoa p2, Pessoa p3){
 
 
 void AlterarPessoa(Pessoa *pp1, Pessoa *pp2, Pessoa *pp3){ // falta terminar 
-	Pessoa aux, p1 = *pp1,p2 = *pp2,p3 = *pp3;
+	Pessoa  p1 = *pp1,p2 = *pp2,p3 = *pp3;
 	char cpf[15];
-	int i;
+	int i,op;
 	printf("Digite o CPF para busca \n");
 	fflush(stdin);
 	gets(cpf);
@@ -104,45 +105,93 @@ void AlterarPessoa(Pessoa *pp1, Pessoa *pp2, Pessoa *pp3){ // falta terminar
 	for (i = 0; i < 3;i++){
 		if(i == 0 && strcmp(cpf, p1.cpf) == 0){
 			ExibirPessoa(p1);
+			printf("1 - Alterar nome \n"); // fazendo alteração por itens
+			printf("2 - Alterar CPF \n");
+			printf("3 - Alterar ano de nascimento \n");
+			printf("Escolhar: ");
+			scanf("%i",&op);
+			switch(op){
+				case 1:
 			printf("Digite alteração do nome \n");
 			fflush(stdin);
-			gets(aux.nome);
+			gets(pp1->nome);
+					break;
+				case 2:
 			printf("Digite alteração do CPF \n");
 			fflush(stdin);
-			gets(aux.cpf);
+			gets(pp1->cpf);
+					break;
+				case 3:
 			printf("Digite alteração do ano de nascimento \n");
 			fflush(stdin);
-			scanf("%i",&aux.ano_nascimento);
-			*pp1 = aux;
+			scanf("%i",&pp1->ano_nascimento);
+					break;
+				default:
+				printf("Opção não existente \n");	
+			}
+			p1 = *pp1;
 			printf("Alterado com sucesso ! \n");
+			ExibirPessoa(p1);
 			break;
 		}else if(i == 1 && strcmp(cpf, p2.cpf) == 0){
 			ExibirPessoa(p2);
-		printf("Digite alteração do nome \n");
+		printf("1 - Alterar nome \n");
+			printf("2 - Alterar CPF \n");
+			printf("3 - Alterar ano de nascimento \n");
+			printf("Escolhar: ");
+			scanf("%i",&op);
+			switch(op){
+				case 1:
+			printf("Digite alteração do nome \n");
 			fflush(stdin);
-			gets(aux.nome);
+			gets(pp2->nome);
+					break;
+				case 2:
 			printf("Digite alteração do CPF \n");
 			fflush(stdin);
-			gets(aux.cpf);
+			gets(pp2->cpf);
+					break;
+				case 3:
 			printf("Digite alteração do ano de nascimento \n");
 			fflush(stdin);
-			scanf("%i",&aux.ano_nascimento);
-			*pp2 = aux;
+			scanf("%i",&pp2->ano_nascimento);
+					break;
+				default:
+				printf("Opção não existente \n");	
+			}
+			p2 = *pp2;
 			printf("Alterado com sucesso ! \n");
+			ExibirPessoa(p2);
 			break;
 		}else if(i == 1 && strcmp(cpf, p3.cpf) == 0){
 			ExibirPessoa(p3);
+			printf("1 - Alterar nome \n");
+			printf("2 - Alterar CPF \n");
+			printf("3 - Alterar ano de nascimento \n");
+			printf("Escolhar: ");
+			scanf("%i",&op);
+			switch(op){
+				case 1:
 			printf("Digite alteração do nome \n");
 			fflush(stdin);
-			gets(aux.nome);
+			gets(pp3->nome);
+					break;
+				case 2:
 			printf("Digite alteração do CPF \n");
 			fflush(stdin);
-			gets(aux.cpf);
+			gets(pp3->cpf);
+					break;
+				case 3:
 			printf("Digite alteração do ano de nascimento \n");
 			fflush(stdin);
-			scanf("%i",&aux.ano_nascimento);
-			*pp3 = aux;
+			scanf("%i",&pp3->ano_nascimento);
+					break;
+				default:
+				printf("Opção não existente \n");	
+			}
+			p3 = *pp3;
 			printf("Alterado com sucesso ! \n");
+			ExibirPessoa(p3);
 			break;
 			}
 		}
@@ -152,13 +201,13 @@ void AlterarPessoa(Pessoa *pp1, Pessoa *pp2, Pessoa *pp3){ // falta terminar
 }// fim do alterar pessoa
 
 void ExcluirPessoa(Pessoa *pp1, Pessoa *pp2, Pessoa *pp3){ // falta terminar 
-	Pessoa aux, p1 = *pp1,p2 = *pp2,p3 = *pp3;
+	Pessoa aux = {"NULL","NULL",0}, p1 = *pp1,p2 = *pp2,p3 = *pp3;
 	char cpf[15];
 	int i, op;
 	printf("Digite o CPF para busca \n");
 	fflush(stdin);
 	gets(cpf);
-	if(strcmp(cpf, p1.cpf)==0 || strcmp(cpf, p2.cpf)==0 || strcmp(cpf, p3.cpf)==0 ){
+	if(strcmp(cpf, p1.cpf)==0 || strcmp(cpf, p2.cpf)==0 || strcmp(cpf, p3.cpf)==0 ){// condicional para se existir cpf
 	for (i = 0; i < 3;i++){
 		if(i == 0 && strcmp(cpf, p1.cpf) == 0){
 			ExibirPessoa(p1);
@@ -193,7 +242,7 @@ void ExcluirPessoa(Pessoa *pp1, Pessoa *pp2, Pessoa *pp3){ // falta terminar
 			}
 		}
 	}else{
-		printf("CPF não cadastrado ! \n");
+		printf("CPF não cadastrado ! \n"); // se não acha cpf 
 	}
 }// fim do excluir pessoa
 
@@ -201,6 +250,8 @@ void Menu(){
 	Pessoa p1,p2,p3;
 	int op;
 	do{
+		system("cls");
+		system("title CRUD Pessoa");
 		printf("----- Menu ------\n");
 		printf("1 - Cadastrar \n");
 		printf("2 - Pesquisar \n");
@@ -212,15 +263,19 @@ void Menu(){
 		switch(op){
 			case 1:
 				CadastraPessoa(&p1,&p2,&p3);
+				system("pause");
 				break;
 			case 2:
 				PesquisarPessoa(p1,p2,p3);
+				system("pause");
 				break;
 			case 3:
 				AlterarPessoa(&p1,&p2,&p3);
+				system("pause");
 				break;
 			case 4:
 				ExcluirPessoa(&p1,&p2,&p3);
+				system("pause");
 				break;
 			case 0:
 				exit(0);
